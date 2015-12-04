@@ -1,0 +1,28 @@
+#!/bin/bash
+
+cat > "$1.c" << EOF
+#include <stdint.h>
+#include <stdio.h>
+
+int main(){
+uint8_t t[65536] = {0};
+uint16_t p = 0;
+int i;
+EOF
+
+while read -n1 char; do
+	case "$char" in
+		\>) echo '++p;';;
+		\<) echo '--p;';;
+		\+) echo '++t[p];';;
+		\-) echo '--t[p];';;
+		\,) echo 'i=getchar(),t[p]=i*(i>0);';;
+		\.) echo 'putchar(t[p]);';;
+		\[) echo 'while(t[p]){';;
+		\]) echo '}';;
+	esac
+done < "$1" >> "$1.c"
+
+echo 'return 0;}' >> "$1.c"
+
+cc -O3 -o "$1.out" "$1.c" && "./$1.out"
