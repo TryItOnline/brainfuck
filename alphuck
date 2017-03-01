@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+code="$1"
+shift
+tr 'aceijops' '><+\-.,[]' < "$code" > "$code.bf"
+"$(dirname "$BASH_SOURCE")/brainfuck" "$code.bf" "$@"
