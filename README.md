@@ -1,4 +1,4 @@
-# [Try It Online] transpilers
+# brainfuck et al. for [Try It Online]
 
 This is a collection of simple transpilers for the [Try It Online] family of online interpreters.
 
@@ -14,7 +14,7 @@ Currently available:
 
 * **[brainbool]**
 
-	Implemented with a wrapping tape of 65,536 8-bit cells. Input characters unequal to **1** are treated as **0**.
+	Implemented with a wrapping tape of 65,536 8-bit cells. Input characters unequal to **1** are treated as **0**. Use `-b` for raw byte input, `-B` for raw byte output.
 
 * **[Random Brainfuck]**
 

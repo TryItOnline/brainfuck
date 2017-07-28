@@ -1,27 +1,66 @@
 #!/usr/bin/env bash
 
+eval set -- "$(getopt --shell=bash bB "$@")"
+
+input=input
+output=output
+
+while (($# > 1)); do
+	[[ "$1" == -b ]] && input=byte_input
+	[[ "$1" == -B ]] && output=byte_output
+	shift
+done
+
 cat > "$1.c" << EOF
 #include <stdint.h>
 #include <stdio.h>
 
-int main(){
-uint8_t t[65536] = {0};
-uint16_t p = 0;
-int i;
+uint8_t input()
+{
+	return getchar() == 49;
+}
+
+uint8_t byte_input()
+{
+	static uint8_t byte = 0, mask = 0;
+	mask /= 2;
+	if (mask == 0)
+		byte = getchar(), mask = 128;
+	return (byte & mask) != 0;
+}
+
+void output(uint8_t bit)
+{
+	putchar(48 | bit);
+}
+
+uint8_t byte_output(uint8_t bit)
+{
+	static uint8_t byte = 0, shift = 7;
+	byte |= bit << shift--;
+	if (shift == 255)
+		putchar(byte), byte = 0, shift = 7;
+}
+
+int main()
+{
+	uint8_t t[65536] = {0};
+	uint16_t p = 0;
+	int i;
 EOF
 
 while read -n1 char; do
 	case "$char" in
-		\>) echo '++p;';;
-		\<) echo '--p;';;
-		\+) echo 't[p]=!t[p];';;
-		\,) echo 't[p]=getchar()==49;';;
-		\.) echo 'putchar(48+t[p]);';;
-		\[) echo 'while(t[p]){';;
-		\]) echo '}';;
+		\>) echo '++p;' ;;
+		\<) echo '--p;' ;;
+		\+) echo 't[p]=!t[p];' ;;
+		\,) echo 't[p]=INPUT();' ;;
+		\.) echo 'OUTPUT(t[p]);' ;;
+		\[) echo 'while(t[p]){' ;;
+		\]) echo '}' ;;
 	esac
 done < "$1" >> "$1.c"
 
 echo 'return 0;}' >> "$1.c"
 
-cc -O3 -o "$1.out" "$1.c" && "./$1.out"
+cc -O3 -D INPUT=$input -D OUTPUT=$output -o "$1.out" "$1.c" && "./$1.out"
