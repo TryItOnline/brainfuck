@@ -16,6 +16,10 @@ Currently available:
 
 	Implemented with a wrapping tape of 65,536 8-bit cells. Input characters unequal to **1** are treated as **0**. Use `-b` for raw byte input, `-B` for raw byte output.
 
+* **[oOo CODE]**
+
+	Implemented with a wrapping tape of 65,536 8-bit cells.
+
 * **[Random Brainfuck]**
 
 	Implemented with a wrapping tape of 65,536 8-bit cells. Uses a cryptographically secure PRNG.
@@ -24,4 +28,5 @@ Currently available:
 [brainfuck]: https://esolangs.org/wiki/brainfuck
 [Alphuck]: https://esolangs.org/wiki/Alphuck
 [brainbool]: https://esolangs.org/wiki/brainbool
+[oOo CODE]: https://esolangs.org/wiki/OOo_CODE
 [Random Brainfuck]: https://esolangs.org/wiki/Random_Brainfuck

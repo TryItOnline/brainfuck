@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+cat > "$1.c" << EOF
+#include <stdint.h>
+#include <stdio.h>
+
+int main(){
+uint8_t t[65536] = {0};
+uint16_t p = 0;
+int i;
+EOF
+
+LC_ALL=C
+
+tr -dC A-Za-z < "$1" | while read -n3 word; do
+    case "$word" in
+        [a-z][a-z][a-z]) echo '--p;';;
+        [a-z][a-z][A-Z]) echo '++p;';;
+        [a-z][A-Z][a-z]) echo 'while(t[p]){';;
+        [a-z][A-Z][A-Z]) echo '}';;
+        [A-Z][a-z][a-z]) echo '--t[p];';;
+        [A-Z][a-z][A-Z]) echo '++t[p];';;
+        [A-Z][A-Z][a-z]) echo 'putchar(t[p]);';;
+        [A-Z][A-Z][A-Z]) echo 'i=getchar(),t[p]=i*(i>0);';;
+    esac
+done >> "$1.c"
+
+echo 'return 0;}' >> "$1.c"
+
+cc -O3 -o "$1.out" "$1.c" && "./$1.out"
