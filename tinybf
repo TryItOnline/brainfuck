@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+cat > "$1.c" << EOF
+#include <stdint.h>
+#include <stdio.h>
+
+int main(){
+uint8_t t[65536] = {0};
+uint16_t p = 0;
+int i;
+EOF
+
+((dir = 0))
+
+tr -dC '=+>|' < "$1" | grep -Po '==|\|=\||.' | while read word; do
+    case "$word$dir" in
+        \+0) echo '++t[p];';;
+        \+1) echo '--t[p];';;
+        \|0) echo 'while(t[p]){';;
+        \|1) echo '}';;
+        \>0) echo '++p;';;
+        \>1) echo '--p;';;
+		\=?) ((dir ^= 1));;
+        \==?) echo 'putchar(t[p]);';;
+		\|=\|0) echo 'i=getchar(),t[p]=i*(i>0);';;
+		\|=\|1) echo '} if(0){;'; ((dir ^= 1));;
+    esac
+done >> "$1.c"
+
+echo 'return 0;}' >> "$1.c"
+
+cc -O3 -o "$1.out" "$1.c" && "./$1.out"

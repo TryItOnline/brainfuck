@@ -20,6 +20,10 @@ Currently available:
 
 	Implemented with a wrapping tape of 65,536 8-bit cells.
 
+* **[tinyBF]**
+
+	Implemented with a wrapping tape of 65,536 8-bit cells.
+
 * **[Random Brainfuck]**
 
 	Implemented with a wrapping tape of 65,536 8-bit cells. Uses a cryptographically secure PRNG.
@@ -29,4 +33,5 @@ Currently available:
 [Alphuck]: https://esolangs.org/wiki/Alphuck
 [brainbool]: https://esolangs.org/wiki/brainbool
 [oOo CODE]: https://esolangs.org/wiki/OOo_CODE
+[tinyBF]: https://esolangs.org/wiki/TinyBF
 [Random Brainfuck]: https://esolangs.org/wiki/Random_Brainfuck
