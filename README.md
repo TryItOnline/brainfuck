@@ -27,6 +27,14 @@ Currently available:
 * **[Random Brainfuck]**
 
 	Implemented with a wrapping tape of 65,536 8-bit cells. Uses a cryptographically secure PRNG.
+
+* **[Brainlove]**
+
+	Implemented with a wrapping tape of 65,536 8-bit cells.
+
+* **[Extended Brainfuck Type I]**
+
+	Implemented with a wrapping tape of 65,536 8-bit cells.
 	
 [Try It Online]: https://tryitonline.net/
 [brainfuck]: https://esolangs.org/wiki/brainfuck
@@ -35,3 +43,5 @@ Currently available:
 [oOo CODE]: https://esolangs.org/wiki/OOo_CODE
 [tinyBF]: https://esolangs.org/wiki/TinyBF
 [Random Brainfuck]: https://esolangs.org/wiki/Random_Brainfuck
+[Brainlove]: https://esolangs.org/wiki/Brainlove
+[Extended Brainfuck Type I]: https://esolangs.org/wiki/Extended_Brainfuck#Extended_Type_I

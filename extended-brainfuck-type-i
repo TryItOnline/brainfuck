@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+cat > "$1.c" << EOF
+#include <stdint.h>
+#include <stdio.h>
+
+int main(){
+uint8_t t[65536] = {0}; // tape
+uint16_t p = 0; // pointer
+uint8_t s = 0; // storage
+int i;
+EOF
+
+while read -n1 char; do
+	case "$char" in
+		\>) echo '++p;';;
+		\<) echo '--p;';;
+		\+) echo '++t[p];';;
+		\-) echo '--t[p];';;
+		\,) echo 'i=getchar(),t[p]=i*(i>0);';;
+		\.) echo 'putchar(t[p]);';;
+		\[) echo 'while(t[p]){';;
+		\]) echo '}';;
+		\@) echo 'return 0;';;
+		\$) echo 's=t[p];';;
+		\!) echo 't[p]=s;';;
+		\}) echo 't[p]>>=1;';;
+		\{) echo 't[p]<<=1;';;
+		\~) echo 't[p]=~t[p];';;
+		\^) echo 't[p]^=s;';;
+		\&) echo 't[p]&=s;';;
+		\|) echo 't[p]|=s;';;
+	esac
+done < "$1" >> "$1.c"
+
+echo 'return 0;}' >> "$1.c"
+
+cc -O3 -o "$1.out" "$1.c" && "./$1.out"
