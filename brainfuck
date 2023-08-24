@@ -1,13 +1,27 @@
 #!/usr/bin/env bash
 
+a=8
+r='i=getchar(),t[p]=i*(i>0);'
+p='putchar(t[p]);'
+
+while (($# > 1)); do
+    if [[ "$1" == -w ]]; then
+        a=32
+    elif [[ "$1" == -n ]]; then
+        r='if(scanf("%d",(int*)&t[p])<0)t[p]=0;'
+        p='printf("%d ",t[p]);'
+    fi
+    shift
+done
+
 cat > "$1.c" << EOF
 #include <stdint.h>
 #include <stdio.h>
 
 int main(){
-uint8_t t[65536] = {0};
+uint${a}_t t[65536] = {0};
 uint16_t p = 0;
-int i;
+uint8_t i;
 EOF
 
 while read -n1 char; do
@@ -16,8 +30,8 @@ while read -n1 char; do
 		\<) echo '--p;';;
 		\+) echo '++t[p];';;
 		\-) echo '--t[p];';;
-		\,) echo 'i=getchar(),t[p]=i*(i>0);';;
-		\.) echo 'putchar(t[p]);';;
+		\,) echo $r;;
+		\.) echo $p;;
 		\[) echo 'while(t[p]){';;
 		\]) echo '}';;
 	esac
