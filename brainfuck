@@ -4,6 +4,16 @@ cat > "$1.c" << EOF
 #include <stdint.h>
 #include <stdio.h>
 
+int getchar_utf8() {
+    int x = getchar();
+    x *= (x>0);
+    if(x & 128) {
+        x &= 31;
+        x = (x << 6) ^ (getchar() & 127);
+    }
+    return x;
+}
+
 int main(){
 uint8_t t[65536] = {0};
 uint16_t p = 0;
@@ -16,7 +26,7 @@ while read -n1 char; do
 		\<) echo '--p;';;
 		\+) echo '++t[p];';;
 		\-) echo '--t[p];';;
-		\,) echo 'i=getchar(),t[p]=i*(i>0);';;
+		\,) echo 't[p]=getchar_utf8();';;
 		\.) echo 'putchar(t[p]);';;
 		\[) echo 'while(t[p]){';;
 		\]) echo '}';;
